@@ -4,14 +4,19 @@ getQuartiles <- function(x, y){
   
   a = vector()
   
+  print("MERGED VECTOR:")
+  print(merged)
+  
   step = (length(x) + length(y))/4
   
+  x = sort(x)
   index = 1
   
   for(i in 1:4){
     a[i] = 0
     
     for(j in(((i-1)*step + 1):(i*step))){
+      if(index > length(x)) break
       if(merged[j] == x[index]){
         a[i] = a[i] + 1
         index = index + 1
@@ -22,15 +27,15 @@ getQuartiles <- function(x, y){
   return(a)
 }
 
-x = c(1, 3, 5, 7, 9, 11, 13,
-      18, 21, 23, 25, 30, 32, 34, 35, 37)
-y = c(-8, -7, 4, 5, 6, 7, 8,
-      12, 14, 15, 18, 19, 20, 21, 23, 25)
+x = c(1, 2, 3, 5, -2, 1, 2, 20)
+y = c(103, -23, -103, 1, -100, -1, -1, -105, 23, 54, 53, 98)
 
-alpha = 0.9
+alpha = 0.95
 
 m = length(x)
 n = length(y)
+
+if((m + n) %% 4 != 0) stop("m + n %% 4 != 0")
 
 a = getQuartiles(x, y)
 
@@ -53,3 +58,16 @@ chiSq = qchisq(alpha, 3, FALSE)
 #H1: различие
 
 result = if(D > chiSq) "H1" else "H0"
+
+print(paste("X = ", x))
+print(paste("Y = ", y))
+print(paste("a = ", a))
+print(paste("s = ", s))
+print(paste("d0 = ", dZero))
+print(paste("d1 = ", dOne))
+print(paste("s~ = ", sMean))
+print(paste("d0~ = ", dZeroMean))
+print(paste("d1~ = ", dOneMean))
+print(paste("D = ", D))
+print(paste("X^2 = ", chiSq))
+print(paste("ACCEPT: ", result))
